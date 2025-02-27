@@ -1,4 +1,29 @@
-CREATE TABLE users (
+CREATE TABLE positions (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    name VARCHAR(64) UNIQUE NOT NULL,
+    description TEXT 
+);
+
+CREATE TABLE employees (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    first_name VARCHAR(64) NOT NULL,
+    middle_name VARCHAR(64), 
+    last_name VARCHAR(64) NOT NULL,
+    birth_date DATE,
+    phone_number VARCHAR(20),
+    email VARCHAR(128) UNIQUE NOT NULL,
+    address VARCHAR(255), 
+    position_id UUID NOT NULL,
+    employment_status VARCHAR(32) CHECK (employment_status IN ('active', 'on leave', 'terminated')),
+    hire_date TIMESTAMP,  
+    termination_date TIMESTAMP, 
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,  
+    FOREIGN KEY (position_id) REFERENCES positions(id)  
+);
+
+
+CREATE TABLE readers (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     fullname VARCHAR(128) NOT NULL,
     email VARCHAR(128) UNIQUE NOT NULL,  
@@ -13,7 +38,6 @@ CREATE TABLE authors (
     last_name VARCHAR(64),
     birth_year INT  
 );
-
 
 CREATE TABLE books (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -42,23 +66,23 @@ CREATE TABLE book_genres (
 
 CREATE TABLE borrowings (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL,
+    reader_id UUID NOT NULL,
     book_id UUID NOT NULL,
     borrowed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     due_date DATE,  
     returned_at TIMESTAMP CHECK (returned_at IS NULL OR returned_at >= borrowed_at),  
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (reader_id) REFERENCES readers(id) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );
 
 
-CREATE TABLE reviews (
+CREATE TABLE book_inspections (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    user_id UUID NOT NULL,
     book_id UUID NOT NULL,
-    rating INT CHECK (rating BETWEEN 0 AND 5),  
-    review_text TEXT,  
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    employee_id UUID NOT NULL,
+    inspected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    condition VARCHAR(64) NOT NULL CHECK (condition IN ('good', 'damaged', 'needs repair', 'lost', 'under review')),
+    comment VARCHAR(256),
+    FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE,
     FOREIGN KEY (book_id) REFERENCES books(id) ON DELETE CASCADE
 );

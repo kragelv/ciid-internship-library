@@ -1,4 +1,4 @@
 # Система библиотеки
 
 ### Схема базы данных
-![database_erd](https://github.com/user-attachments/assets/32f9a980-5cac-444c-9235-f732e5d55c06)
+![database_erd](https://github.com/user-attachments/assets/02d2a004-61b9-46b2-9f04-4f22efa9f5e4)
