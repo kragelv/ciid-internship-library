@@ -1,7 +1,7 @@
 # Система библиотеки
 
 ### [SonarCloud](https://sonarcloud.io/project/overview?id=kragelv_ciid-internship-library)
-![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kragelv_ciid-internship-library&metric=alert_status) ![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=kragelv_ciid-internship-library&metric=code_smells) ![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=kragelv_ciid-internship-library&metric=vulnerabilities)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kragelv_ciid-internship-library&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kragelv_ciid-internship-library) [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=kragelv_ciid-internship-library&metric=code_smells)](https://sonarcloud.io/project/issues?types=CODE_SMELL&id=kragelv_ciid-internship-library) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=kragelv_ciid-internship-library&metric=vulnerabilities)](https://sonarcloud.io/project/issues?types=VULNERABILITY&id=kragelv_ciid-internship-library)
 
 
 ### Схема базы данных
