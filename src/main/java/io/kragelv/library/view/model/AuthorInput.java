@@ -1,31 +1,19 @@
-package io.kragelv.library.model;
+package io.kragelv.library.view.model;
 
-import java.util.UUID;
-
-public class Author {
-
-    private UUID id;
+public class AuthorInput {
+    
     private String firstName;
     private String middleName;
     private String lastName;
     private Integer birthYear;
 
-    public Author() { }
+    public AuthorInput() { }
 
-    public Author(UUID id, String firstName, String middleName, String lastName, Integer birthYear) {
-        this.id = id;
+    public AuthorInput(String firstName, String middleName, String lastName, Integer birthYear) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
         this.birthYear = birthYear;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -58,16 +46,5 @@ public class Author {
 
     public void setBirthYear(Integer birthYear) {
         this.birthYear = birthYear;
-    }
-
-    @Override
-    public String toString() {
-        return "Author{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", birthYear=" + birthYear +
-                '}';
     }
 }

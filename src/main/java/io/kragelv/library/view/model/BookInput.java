@@ -1,31 +1,25 @@
-package io.kragelv.library.model;
+package io.kragelv.library.view.model;
 
+import java.util.List;
 import java.util.UUID;
 
-public class Book {
-
-    private UUID id;
+public class BookInput {
+    
     private String title;
     private UUID authorId;
     private Integer publishedYear;
     private Integer availableCopies;
+    private List<String> genres;
 
-    public Book() { }
 
-    public Book(UUID id, String title, UUID authorId, Integer publishedYear, Integer availableCopies) {
-        this.id = id;
+    public BookInput() { }
+
+    public BookInput(String title, UUID authorId, Integer publishedYear, Integer availableCopies, List<String> genres) {
         this.title = title;
         this.authorId = authorId;
         this.publishedYear = publishedYear;
         this.availableCopies = availableCopies;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
+        this.genres = genres;
     }
 
     public String getTitle() {
@@ -60,14 +54,12 @@ public class Book {
         this.availableCopies = availableCopies;
     }
 
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", authorId=" + authorId +
-                ", publishedYear=" + publishedYear +
-                ", availableCopies=" + availableCopies +
-                '}';
+    public List<String> getGenres() {
+        return genres;
     }
+
+    public void setGenres(List<String> genres) {
+       this.genres = genres;
+    }
+
 }

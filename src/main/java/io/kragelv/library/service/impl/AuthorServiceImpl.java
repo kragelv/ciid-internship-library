@@ -44,7 +44,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void updateAuthor(UUID authorId, String firstName, String middleName, String lastName, int birthYear) {
+    public void updateAuthor(UUID authorId, String firstName, String middleName, String lastName, Integer birthYear) {
         Optional<Author> existingAuthor = authorDAO.getById(authorId);
         if (!existingAuthor.isPresent()) {
             throw new AuthorNotFoundException(authorId);

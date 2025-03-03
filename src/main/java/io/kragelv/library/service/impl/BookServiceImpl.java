@@ -41,7 +41,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book createBook(String title, UUID authorId, int publishedYear, int availableCopies, List<String> genres) {
+    public Book createBook(String title, UUID authorId, Integer publishedYear, Integer availableCopies, List<String> genres) {
         Optional<Author> author = authorDAO.getById(authorId);
         if (author.isEmpty()) {
             throw new AuthorNotFoundException(authorId);
@@ -72,7 +72,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book createBookWithGenreIds(String title, UUID authorId, int publishedYear, int availableCopies,
+    public Book createBookWithGenreIds(String title, UUID authorId, Integer publishedYear, Integer availableCopies,
             List<UUID> genreIds) {
         Optional<Author> author = authorDAO.getById(authorId);
         if (author.isEmpty()) {
@@ -109,8 +109,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void updateBook(UUID bookId, String title, UUID authorId, int publishedYear, int availableCopies,
-            List<UUID> genreIds) {
+    public void updateBook(UUID bookId, String title, UUID authorId, Integer publishedYear, Integer availableCopies,
+            List<String> genres) {
         Optional<Book> existingBook = bookDAO.getById(bookId);
         if (existingBook.isEmpty()) {
             throw new BookNotFoundException(bookId);
@@ -129,13 +129,13 @@ public class BookServiceImpl implements BookService {
         bookDAO.update(bookToUpdate);
 
         bookGenreDAO.deleteByBookId(bookId);
-        for (UUID genreId : genreIds) {
-            Optional<Genre> genre = genreDAO.getById(genreId);
+        for (String genreName : genres) {
+            Optional<Genre> genre = genreDAO.getByName(genreName);
             if (genre.isEmpty()) {
-                throw new GenreNotFoundException(genreId);
+                throw new GenreNotFoundException(genreName, "name");
             }
 
-            bookGenreDAO.create(bookId, genreId);
+            bookGenreDAO.create(bookId, genre.get().getId());
         }
     }
 

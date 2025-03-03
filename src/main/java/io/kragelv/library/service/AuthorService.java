@@ -12,7 +12,7 @@ public interface AuthorService {
 
     Author getAuthorById(UUID authorId);
 
-    void updateAuthor(UUID authorId, String firstName, String middleName, String lastName, int birthYear);
+    void updateAuthor(UUID authorId, String firstName, String middleName, String lastName, Integer birthYear);
 
     void deleteAuthor(UUID authorId);
 }
