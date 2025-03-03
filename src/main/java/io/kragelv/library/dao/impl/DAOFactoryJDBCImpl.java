@@ -2,6 +2,7 @@ package io.kragelv.library.dao.impl;
 
 import io.kragelv.library.dao.AuthorDAO;
 import io.kragelv.library.dao.BookDAO;
+import io.kragelv.library.dao.BookGenreDAO;
 import io.kragelv.library.dao.BorrowingDAO;
 import io.kragelv.library.dao.DAOFactory;
 import io.kragelv.library.dao.GenreDAO;
@@ -13,6 +14,7 @@ public class DAOFactoryJDBCImpl implements DAOFactory {
     private static final BookDAO bookDAO = new BookDAOImpl();
     private static final GenreDAO genreDAO = new GenreDAOImpl();
     private static final ReaderDAO readerDAO = new ReaderDAOImpl();
+    private static final BookGenreDAO bookGenreDAO = new BookGenreDAOImpl();
 
     @Override
     public AuthorDAO getAuthorDAO() {
@@ -39,5 +41,9 @@ public class DAOFactoryJDBCImpl implements DAOFactory {
         return readerDAO;
     }
 
+    @Override
+    public BookGenreDAO getBookGenreDAO() {
+        return bookGenreDAO;
+    }
     
 }

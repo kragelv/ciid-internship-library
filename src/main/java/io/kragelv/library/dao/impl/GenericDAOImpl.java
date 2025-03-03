@@ -1,32 +1,15 @@
 package io.kragelv.library.dao.impl;
 
-import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 import io.kragelv.library.dao.GenericDAO;
-import io.kragelv.library.dao.connection.ConnectionManager;
 
-public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
-
-    protected Connection getConnection() throws SQLException {
-        return ConnectionManager.getConnection();
-    }
-
-    protected void closeResources(AutoCloseable... resources) {
-        for (AutoCloseable resource : resources) {
-            try {
-                if (resource != null) {
-                    resource.close();
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
+public abstract class GenericDAOImpl<T> extends AbstractDAOImpl implements GenericDAO<T> {
 
     protected abstract T mapResultSetToEntity(ResultSet resultSet) throws SQLException;
 
@@ -40,5 +23,9 @@ public abstract class GenericDAOImpl<T> implements GenericDAO<T> {
 
     protected LocalDateTime getLocalDateTimeFromNullableTimestamp(Timestamp timestamp) {
         return timestamp != null ? timestamp.toLocalDateTime() : null;
+    }
+
+    protected UUID getUUIDForStatement(UUID id) {
+        return id != null ? id : UUID.randomUUID();
     }
 }

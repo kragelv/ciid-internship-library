@@ -12,7 +12,7 @@ public class Author {
 
     public Author() { }
 
-    public Author(UUID id, String firstName, String middleName, String lastName, int birthYear) {
+    public Author(UUID id, String firstName, String middleName, String lastName, Integer birthYear) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;

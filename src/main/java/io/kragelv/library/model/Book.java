@@ -7,12 +7,12 @@ public class Book {
     private UUID id;
     private String title;
     private UUID authorId;
-    private int publishedYear;
-    private int availableCopies;
+    private Integer publishedYear;
+    private Integer availableCopies;
 
     public Book() { }
 
-    public Book(UUID id, String title, UUID authorId, int publishedYear, int availableCopies) {
+    public Book(UUID id, String title, UUID authorId, Integer publishedYear, Integer availableCopies) {
         this.id = id;
         this.title = title;
         this.authorId = authorId;
@@ -44,19 +44,19 @@ public class Book {
         this.authorId = authorId;
     }
 
-    public int getPublishedYear() {
+    public Integer getPublishedYear() {
         return publishedYear;
     }
 
-    public void setPublishedYear(int publishedYear) {
+    public void setPublishedYear(Integer publishedYear) {
         this.publishedYear = publishedYear;
     }
 
-    public int getAvailableCopies() {
+    public Integer getAvailableCopies() {
         return availableCopies;
     }
 
-    public void setAvailableCopies(int availableCopies) {
+    public void setAvailableCopies(Integer availableCopies) {
         this.availableCopies = availableCopies;
     }
 }

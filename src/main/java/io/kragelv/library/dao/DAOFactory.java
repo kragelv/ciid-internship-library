@@ -1,6 +1,7 @@
 package io.kragelv.library.dao;
 
 public interface DAOFactory {
+
     AuthorDAO getAuthorDAO();
 
     BorrowingDAO getBorrowingDAO();
@@ -10,4 +11,6 @@ public interface DAOFactory {
     GenreDAO getGenreDAO();
 
     ReaderDAO getReaderDAO();
+
+    BookGenreDAO getBookGenreDAO();
 }
