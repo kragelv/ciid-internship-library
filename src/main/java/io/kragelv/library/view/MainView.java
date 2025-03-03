@@ -35,13 +35,13 @@ public class MainView {
                 String choice = scanner.nextLine();
                 switch (choice) {
                     case "1":
-                        // readerView.showMenu();
+                        // readerView.show();
                         break;
                     case "2":
-                        bookView.showMenu();
+                        bookView.show();
                         break;
                     case "3":
-                        // borrowingView.showMenu();
+                        // borrowingView.show();
                         break;
                     case "4":
                         genreView.show();

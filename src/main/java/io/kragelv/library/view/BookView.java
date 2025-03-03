@@ -18,7 +18,7 @@ public class BookView {
     private final AuthorService authorService = new AuthorServiceImpl();
     private final Scanner scanner = new Scanner(System.in);
 
-    public void showMenu() {
+    public void show() {
         while (true) {
             System.out.println("\n===== Book Management =====");
             System.out.println("1. Add Book");
