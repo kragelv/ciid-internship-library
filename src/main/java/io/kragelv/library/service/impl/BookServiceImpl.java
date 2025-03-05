@@ -51,6 +51,7 @@ public class BookServiceImpl implements BookService {
         Book book = new Book();
         book.setTitle(title);
         book.setAuthorId(authorId);
+        book.setPublishedYear(publishedYear);
         book.setAvailableCopies(availableCopies);
         book = bookDAO.create(book);
 
@@ -83,6 +84,7 @@ public class BookServiceImpl implements BookService {
         Book book = new Book();
         book.setTitle(title);
         book.setAuthorId(authorId);
+        book.setPublishedYear(publishedYear);
         book.setAvailableCopies(availableCopies);
         book = bookDAO.create(book);
 
