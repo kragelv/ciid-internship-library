@@ -9,6 +9,7 @@ public class JspPaths {
     public static final String INDEX = "/index.jsp";
     public static final String ABOUT = "/about.jsp";
     public static final String ERROR_404 = "/error404.jsp";
+    public static final String ERROR_500 = "/error500.jsp";
     public static final String BOOKS = "/pages/books.jsp";
     public static final String GENRES = "/pages/genres.jsp";
     public static final String BOOK = "/pages/book.jsp";
