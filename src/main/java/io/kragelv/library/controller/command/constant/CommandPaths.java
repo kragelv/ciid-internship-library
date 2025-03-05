@@ -5,7 +5,6 @@ public class CommandPaths {
     private CommandPaths () { }
 
     public static final String GO_TO_INDEX = "/";
-    public static final String GO_TO_ABOUT = "/about";
     public static final String LIST_BOOKS = "/books";
     public static final String LIST_GENRES = "/genres";
     public static final String VIEW_BOOK = "/book";

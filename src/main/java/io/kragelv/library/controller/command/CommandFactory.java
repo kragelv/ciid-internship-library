@@ -27,7 +27,6 @@ public class CommandFactory {
 
     static {
         commands.put(CommandPaths.GO_TO_INDEX, new ForwardCommand(JspPaths.INDEX));
-        commands.put(CommandPaths.GO_TO_ABOUT, new ForwardCommand(JspPaths.ABOUT));
         commands.put(CommandPaths.LIST_BOOKS, new ListBooksCommand());
         commands.put(CommandPaths.CREATE_BOOK, new CreateBookCommand());
         commands.put(CommandPaths.VIEW_BOOK, new ViewBookCommand());
