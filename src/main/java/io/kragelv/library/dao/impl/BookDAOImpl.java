@@ -68,12 +68,11 @@ public class BookDAOImpl extends GenericDAOImpl<Book> implements BookDAO {
                 if (resultSet.wasNull()) {
                     bookPublishedYear = null;
                 }
-                Integer bookPubslishedYear2 = bookPublishedYear;
                 Integer bookAvailableCopies = resultSet.getInt("book_available_copies");
   
                 book.setId(bookId);
                 book.setTitle(bookTitle);
-                book.setPublishedYear(bookPubslishedYear2);
+                book.setPublishedYear(bookPublishedYear);
                 book.setAvailableCopies(bookAvailableCopies);
 
                 UUID authorId = resultSet.getObject("author_id", UUID.class);

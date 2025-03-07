@@ -1,6 +1,6 @@
 package io.kragelv.library.controller.command.constant;
 
-public class JspPaths {
+public final class JspPaths {
     
     private JspPaths () { }
 

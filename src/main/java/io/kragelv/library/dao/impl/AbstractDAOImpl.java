@@ -11,15 +11,4 @@ public abstract class AbstractDAOImpl {
         return ConnectionManager.getConnection();
     }
 
-    protected void closeResources(AutoCloseable... resources) {
-        for (AutoCloseable resource : resources) {
-            try {
-                if (resource != null) {
-                    resource.close();
-                }
-            } catch (Exception e) {
-                System.err.println("Failed to close resource: " + e.getMessage());
-            }
-        }
-    }
 }

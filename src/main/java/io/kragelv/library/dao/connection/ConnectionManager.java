@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import io.kragelv.library.dao.exception.PropertiesLoadException;
+
 public class ConnectionManager {
     private static final String PROPERTIES_FILE = "db.properties";
     private static String url;

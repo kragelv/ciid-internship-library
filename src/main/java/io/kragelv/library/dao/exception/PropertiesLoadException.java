@@ -1,4 +1,4 @@
-package io.kragelv.library.dao.connection;
+package io.kragelv.library.dao.exception;
 
 public class PropertiesLoadException extends RuntimeException{
     
