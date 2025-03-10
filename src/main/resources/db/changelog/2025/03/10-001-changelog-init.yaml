@@ -1,0 +1,420 @@
+databaseChangeLog:
+- changeSet:
+    id: 1741605553039-1
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: authorsPK
+            name: id
+            type: UUID
+        - column:
+            name: birth_year
+            type: INT
+        - column:
+            name: first_name
+            type: VARCHAR(64)
+        - column:
+            constraints:
+              nullable: false
+            name: last_name
+            type: VARCHAR(64)
+        - column:
+            name: middle_name
+            type: VARCHAR(64)
+        tableName: authors
+- changeSet:
+    id: 1741605553039-2
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: book_genresPK
+            name: book_id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: book_genresPK
+            name: genre_id
+            type: UUID
+        tableName: book_genres
+- changeSet:
+    id: 1741605553039-3
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: book_inspectionsPK
+            name: id
+            type: UUID
+        - column:
+            name: comment
+            type: VARCHAR(256)
+        - column:
+            constraints:
+              nullable: false
+            name: condition
+            type: VARCHAR(64)
+        - column:
+            constraints:
+              nullable: false
+            name: inspected_at
+            type: timestamp
+        - column:
+            constraints:
+              nullable: false
+            name: book_id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: employee_id
+            type: UUID
+        tableName: book_inspections
+- changeSet:
+    id: 1741605553039-4
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: booksPK
+            name: id
+            type: UUID
+        - column:
+            name: available_copies
+            type: INT
+        - column:
+            name: published_year
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: title
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: author_id
+            type: UUID
+        tableName: books
+- changeSet:
+    id: 1741605553039-5
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: borrowingsPK
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: borrowed_at
+            type: timestamp
+        - column:
+            name: due_date
+            type: date
+        - column:
+            name: returned_at
+            type: timestamp
+        - column:
+            constraints:
+              nullable: false
+            name: book_id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: reader_id
+            type: UUID
+        tableName: borrowings
+- changeSet:
+    id: 1741605553039-6
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: employeesPK
+            name: id
+            type: UUID
+        - column:
+            name: address
+            type: VARCHAR(255)
+        - column:
+            name: birth_date
+            type: date
+        - column:
+            name: created_at
+            type: timestamp
+        - column:
+            constraints:
+              nullable: false
+            name: email
+            type: VARCHAR(128)
+        - column:
+            constraints:
+              nullable: false
+            name: employment_status
+            type: VARCHAR(32)
+        - column:
+            constraints:
+              nullable: false
+            name: first_name
+            type: VARCHAR(64)
+        - column:
+            name: hire_date
+            type: date
+        - column:
+            constraints:
+              nullable: false
+            name: last_name
+            type: VARCHAR(64)
+        - column:
+            name: middle_name
+            type: VARCHAR(64)
+        - column:
+            name: phone_number
+            type: VARCHAR(20)
+        - column:
+            name: termination_date
+            type: timestamp
+        - column:
+            name: updated_at
+            type: timestamp
+        - column:
+            constraints:
+              nullable: false
+            name: position_id
+            type: UUID
+        tableName: employees
+- changeSet:
+    id: 1741605553039-7
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: genresPK
+            name: id
+            type: UUID
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(64)
+        tableName: genres
+- changeSet:
+    id: 1741605553039-8
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: positionsPK
+            name: id
+            type: UUID
+        - column:
+            name: description
+            type: CLOB
+        - column:
+            constraints:
+              nullable: false
+            name: name
+            type: VARCHAR(64)
+        tableName: positions
+- changeSet:
+    id: 1741605553039-9
+    author: kragelv (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+              primaryKeyName: readersPK
+            name: id
+            type: UUID
+        - column:
+            name: created_at
+            type: timestamp
+        - column:
+            constraints:
+              nullable: false
+            name: email
+            type: VARCHAR(128)
+        - column:
+            constraints:
+              nullable: false
+            name: fullname
+            type: VARCHAR(128)
+        tableName: readers
+- changeSet:
+    id: 1741605553039-10
+    author: kragelv (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: UC_EMPLOYEESEMAIL_COL
+        tableName: employees
+- changeSet:
+    id: 1741605553039-11
+    author: kragelv (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: UC_GENRESNAME_COL
+        tableName: genres
+- changeSet:
+    id: 1741605553039-12
+    author: kragelv (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: name
+        constraintName: UC_POSITIONSNAME_COL
+        tableName: positions
+- changeSet:
+    id: 1741605553039-13
+    author: kragelv (generated)
+    changes:
+    - addUniqueConstraint:
+        columnNames: email
+        constraintName: UC_READERSEMAIL_COL
+        tableName: readers
+- changeSet:
+    id: 1741605553039-14
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: genre_id
+        baseTableName: book_genres
+        constraintName: FK6ce5ct13whb85xqu83jmceboj
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: genres
+        validate: true
+- changeSet:
+    id: 1741605553039-15
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: book_id
+        baseTableName: book_inspections
+        constraintName: FK6lhksye2bqefha80bs5lpwljx
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: books
+        validate: true
+- changeSet:
+    id: 1741605553039-16
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: book_id
+        baseTableName: borrowings
+        constraintName: FK6q1qai7on9rcryji44lyglqt1
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: books
+        validate: true
+- changeSet:
+    id: 1741605553039-17
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: author_id
+        baseTableName: books
+        constraintName: FKfjixh2vym2cvfj3ufxj91jem7
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: authors
+        validate: true
+- changeSet:
+    id: 1741605553039-18
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: reader_id
+        baseTableName: borrowings
+        constraintName: FKijqg18ajtsw1qoeifvteetg9c
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: readers
+        validate: true
+- changeSet:
+    id: 1741605553039-19
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: employee_id
+        baseTableName: book_inspections
+        constraintName: FKmf5lbdot59k1o1tedktiwtcve
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: employees
+        validate: true
+- changeSet:
+    id: 1741605553039-20
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: position_id
+        baseTableName: employees
+        constraintName: FKngcpgx7fx5kednw3m7u0u8of3
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: positions
+        validate: true
+- changeSet:
+    id: 1741605553039-21
+    author: kragelv (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: book_id
+        baseTableName: book_genres
+        constraintName: FKtqnlma9c5byf3gfqsuu0ebrl5
+        deferrable: false
+        initiallyDeferred: false
+        referencedColumnNames: id
+        referencedTableName: books
+        validate: true
+

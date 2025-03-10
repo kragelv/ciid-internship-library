@@ -1,4 +1,4 @@
-package io.kragel.library;
+package io.kragelv.library;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

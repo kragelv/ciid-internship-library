@@ -1,0 +1,15 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Run with 'dev'",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "io.kragelv.library.LibraryAppApplication",
+      "projectName": "library-app",
+      "vmArgs": "-Dspring.profiles.active=dev",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

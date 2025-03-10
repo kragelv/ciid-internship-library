@@ -1,0 +1,21 @@
+spring:
+  web:
+    locale: en_US
+    locale-resolver: fixed
+  application:
+    name: library-app
+  datasource:
+    url: ${DB_URL}
+    driver-class-name: org.postgresql.Driver
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+  jpa:
+    properties:
+      hibernate:
+        ddl-auto: validate
+        jdbc:
+          time_zone: UTC
+  liquibase:
+    enabled: true
+    default-schema: public
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
