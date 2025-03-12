@@ -34,7 +34,7 @@ public class GenreController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public PageResponse<GenreDto> getList(@Valid @Positive @RequestParam(name = "page", defaultValue = "1") int page,
-            @Valid @Positive @RequestParam(name = "limit", defaultValue = "15") int limit) {
+            @Valid @Positive @RequestParam(name = "limit", defaultValue = "20") int limit) {
         return genreService.getList(page - 1, limit);
     }
 
