@@ -1,0 +1,113 @@
+<div class="max-w-9/10 mx-auto">
+  <div *ngIf="loading" class="flex justify-center mt-5">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!loading">
+    <div
+      *ngIf="isFormVisible"
+      class="max-w-5xl mx-auto p-6 rounded-lg shadow-md mb-6"
+    >
+      <h3 class="text-xl font-semibold text-gray-800 mb-8">Добавить Жанр</h3>
+      <form (ngSubmit)="handleCreateGenre()">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Название</label>
+          <input
+            type="text"
+            [(ngModel)]="formValues.name"
+            name="name"
+            class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+            required
+          />
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button
+            type="submit"
+            class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700"
+          >
+            Создать
+          </button>
+          <button
+            type="button"
+            (click)="isFormVisible = false"
+            class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700"
+          >
+            Отмена
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="p-6 rounded-lg shadow-lg mt-3">
+      <div class="flex mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">
+          <ng-container *ngIf="!error">
+            <ng-container *ngIf="totalCount > 0"
+              >Жанры ({{ totalCount }})</ng-container
+            >
+            <ng-container *ngIf="totalCount === 0"
+              >Пусто, необходимо добавить жанры</ng-container
+            >
+          </ng-container>
+        </h2>
+        <button
+          *ngIf="!isFormVisible"
+          (click)="isFormVisible = true"
+          class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 ms-auto"
+        >
+          Добавить
+        </button>
+      </div>
+
+      <div
+        *ngIf="error"
+        class="flex bg-red-100 text-red-500 font-semibold p-4 rounded-lg"
+      >
+        Ошибка загрузки данных
+      </div>
+
+      <div *ngIf="!error">
+        <div
+          class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
+          <div
+            *ngFor="let genre of genres"
+            class="bg-gray-100 p-2 rounded-lg shadow-md flex flex-col gap-1"
+          >
+            <a
+              [routerLink]="['/genres', genre.id]"
+              [state]="routerLinkState"
+              class="block text-gray-800 bg-gray-200 rounded-lg p-2 hover:text-blue-700"
+            >
+              <h3 class="text-lg font-semibold">{{ genre.name }}</h3>
+            </a>
+            <div class="flex align-items-baseline">
+              <div class="flex gap-1 ml-auto">
+                <a
+                  [routerLink]="['/genres', genre.id]"
+                  [queryParams]="{ edit: '' }"
+                  [state]="routerLinkState"
+                  class="block border-blue-500 border-2 text-white font-semibold py-1 px-2 rounded-md hover:bg-blue-500"
+                  >✏️</a
+                >
+                <button
+                  (click)="handleDeleteGenre(genre.id)"
+                  class="border-red-500 border-2 text-white font-semibold py-1 px-2 rounded-md hover:bg-red-500"
+                >
+                  🗑️
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <app-pagination
+          [currentPage]="queryParams.page"
+          [totalPages]="totalPages"
+          (pageChange)="handlePageChange($event)"
+        >
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

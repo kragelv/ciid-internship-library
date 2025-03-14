@@ -1,0 +1,32 @@
+<header class="bg-blue-600 px-4">
+  <div class="max-w-9/10 flex gap-7">
+    <div class="my-5">
+      <h2 class="text-white text-2xl font-bold">Library</h2>
+    </div>
+    <div class="flex mr-auto items-stretch">
+      <a
+        routerLink="/books"
+        routerLinkActive="bg-blue-700 pointer-events-none"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-white text-lg inline-flex justify-center px-5 items-center font-semibold hover:text-blue-200 transition duration-300"
+        >Книги</a
+      >
+
+      <a
+        routerLink="/authors"
+        routerLinkActive="bg-blue-700 pointer-events-none"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-white text-lg inline-flex justify-center px-5 items-center font-semibold hover:text-blue-200 transition duration-300"
+        >Авторы</a
+      >
+
+      <a
+        routerLink="/genres"
+        routerLinkActive="bg-blue-700 pointer-events-none"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="text-white text-lg inline-flex justify-center px-5 items-center font-semibold hover:text-blue-200 transition duration-300"
+        >Жанры</a
+      >
+    </div>
+  </div>
+</header>

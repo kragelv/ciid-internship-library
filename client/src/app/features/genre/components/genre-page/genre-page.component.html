@@ -1,0 +1,78 @@
+<div class="max-w-5xl mx-auto p-6">
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-2xl font-semibold text-gray-700">Информация о жанре</h2>
+
+    <div *ngIf="loading" class="flex justify-center mt-5">
+      <app-loader></app-loader>
+    </div>
+
+    <div
+      *ngIf="error"
+      class="flex bg-red-100 text-red-500 font-semibold p-4 rounded-lg"
+    >
+      Ошибка загрузки данных
+    </div>
+
+    <ng-container *ngIf="!loading && !error">
+      <ng-template
+        [ngTemplateOutlet]="getCurrentTemplate()"
+        [ngTemplateOutletContext]="{ genre: genre }"
+      >
+      </ng-template>
+    </ng-container>
+  </div>
+</div>
+
+<ng-template #viewTemplate>
+  <p><strong>Название:</strong> {{ genre.name }}</p>
+  <div class="mt-6 flex gap-4">
+    <a
+      [routerLink]="[]"
+      [queryParams]="{ edit: '' }"
+      [state]="routerEditLinkState"
+      class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
+    >
+      Редактировать
+    </a>
+    <a
+      [routerLink]="backUrl.path"
+      [queryParams]="backUrl.queryParams"
+      [fragment]="backUrl.fragment"
+      class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-700"
+    >
+      Назад
+    </a>
+  </div>
+</ng-template>
+
+<ng-template #editTemplate>
+  <form (ngSubmit)="saveGenre()" class="mt-4">
+    <div class="mb-4">
+      <label for="name" class="block text-gray-700">Название</label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+        [(ngModel)]="name"
+        required
+      />
+    </div>
+    <div class="flex gap-4">
+      <button
+        type="submit"
+        class="bg-sky-400 text-white px-4 py-2 rounded hover:bg-sky-500"
+      >
+        Сохранить
+      </button>
+      <a
+        [routerLink]="backUrl.path"
+        [queryParams]="backUrl.queryParams"
+        [fragment]="backUrl.fragment"
+        class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-700"
+      >
+        Отмена
+      </a>
+    </div>
+  </form>
+</ng-template>

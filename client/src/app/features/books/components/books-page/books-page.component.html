@@ -1,0 +1,169 @@
+<div class="max-w-9/10 mx-auto">
+    <div *ngIf="loading" class="flex justify-center mt-5">
+      <app-loader></app-loader>
+    </div>
+  
+    <div *ngIf="!loading">
+      <div
+        *ngIf="isFormVisible"
+        class="max-w-5xl mx-auto p-6 rounded-lg shadow-md mb-6"
+      >
+        <h3 class="text-xl font-semibold text-gray-800 mb-8">Добавить Книгу</h3>
+        <form (ngSubmit)="handleCreateBook()">
+          <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Название</label>
+            <input
+              type="text"
+              [(ngModel)]="formValues.title"
+              name="title"
+              class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+              required
+            />
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Автор</label>
+            <app-authors-async-select (change)="changeAuthor($event)" ></app-authors-async-select>
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Год публикации</label>
+            <input
+              type="number"
+              [(ngModel)]="formValues.publishedYear"
+              name="publishedYear"
+              class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+            />
+          </div>
+
+          <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Кол-во копий</label>
+            <input
+              type="number"
+              [(ngModel)]="formValues.availableCopies"
+              name="availableCopies"
+              class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+              required
+            />
+          </div>
+  
+          <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Жанры</label>
+            <app-genres-async-multi-select ></app-genres-async-multi-select>
+          </div>
+  
+          <div class="flex justify-end space-x-4">
+            <button
+              type="submit"
+              class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700"
+            >
+              Создать
+            </button>
+            <button
+              type="button"
+              (click)="isFormVisible = false"
+              class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700"
+            >
+              Отмена
+            </button>
+          </div>
+        </form>
+      </div>
+  
+      <div class="p-6 rounded-lg shadow-lg mt-3">
+        <div class="flex mb-4">
+          <h2 class="text-2xl font-bold text-gray-800">
+            <ng-container *ngIf="!error">
+              <ng-container *ngIf="totalCount > 0"
+                >Книги ({{ totalCount }})</ng-container
+              >
+              <ng-container *ngIf="totalCount === 0"
+                >Пусто, необходимо добавить книги</ng-container
+              >
+            </ng-container>
+          </h2>
+          <button
+            *ngIf="!isFormVisible"
+            (click)="isFormVisible = true"
+            class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 ms-auto"
+          >
+            Добавить
+          </button>
+        </div>
+  
+        <div
+          *ngIf="error"
+          class="flex bg-red-100 text-red-500 font-semibold p-4 rounded-lg"
+        >
+          Ошибка загрузки данных
+        </div>
+  
+        <div *ngIf="!error">
+          <table
+            class="w-full border-collapse border border-gray-200 rounded-lg overflow-hidden"
+          >
+            <thead>
+              <tr class="bg-gray-200 text-gray-700 uppercase text-sm">
+                <th class="py-3 px-4 border border-gray-300 w-[30%]">Автор</th>
+                <th class="py-3 px-4 border border-gray-300 w-[40%]">Название</th>
+                <th class="py-3 px-4 border border-gray-300 w-">Год публикации</th>
+                <th class="py-3 px-4 border border-gray-300 w-">Кол-во копий</th>
+                <th class="py-3 px-4 border border-gray-300 w-[10%]">Жанры</th>
+                <th class="py-3 px-4 border border-gray-300 w-[10%]">Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                *ngFor="let book of books"
+                class="border border-gray-300 bg-white hover:bg-gray-100 transition"
+              >
+                <td class="py-3 px-4 border border-gray-300">
+                  <a
+                    [routerLink]="['/authors', book.author.id]"
+                    class="block w-full h-full hover:text-blue-700"
+                  >
+                    <span class="text-blue-500">↗</span>
+                    <span>{{ book.author.lastName }} {{ book.author.firstName }}</span>
+                  </a>
+                </td>
+                <td class="py-3 px-4 border border-gray-300">{{ book.title }}</td>
+                <td class="py-3 px-4 border border-gray-300">{{ book.publishedYear }}</td>
+                <td class="py-3 px-4 border border-gray-300">{{ book.availableCopies }}</td>
+                <td class="py-3 px-4 border border-gray-300">
+                  <span *ngFor="let genre of book.genres">
+                    {{ genre.name }}
+                  </span>
+                </td>
+                <td class="py-3 px-4 border border-gray-300">
+                  <div class="flex gap-1">
+                    <a
+                      [routerLink]="['/books', book.id]"
+                      [queryParams]="{ edit: '' }"
+                      [state]="routerLinkState"
+                      class="border-blue-500 border-2 text-white font-semibold py-2 px-3 rounded-lg hover:bg-blue-500 transition duration-300 ease-in-out"
+                    >
+                      ✏️
+                    </a>
+                    <button
+                      (click)="handleDeleteBook(book.id)"
+                      class="border-red-500 border-2 text-white font-semibold py-2 px-3 rounded-lg hover:bg-red-500 transition duration-300 ease-in-out"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+  
+          <app-pagination
+            [currentPage]="queryParams.page"
+            [totalPages]="totalPages"
+            (pageChange)="handlePageChange($event)"
+          >
+          </app-pagination>
+        </div>
+      </div>
+    </div>
+  </div>
+  

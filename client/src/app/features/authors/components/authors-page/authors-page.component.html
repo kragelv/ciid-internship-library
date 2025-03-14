@@ -1,0 +1,174 @@
+<div class="max-w-9/10 mx-auto">
+  <div *ngIf="loading" class="flex justify-center mt-5">
+    <app-loader></app-loader>
+  </div>
+
+  <div *ngIf="!loading">
+    <div
+      *ngIf="isFormVisible"
+      class="max-w-5xl mx-auto p-6 rounded-lg shadow-md mb-6"
+    >
+      <h3 class="text-xl font-semibold text-gray-800 mb-8">Добавить Автора</h3>
+      <form (ngSubmit)="handleCreateAuthor()">
+        <div class="mb-4">
+            <label class="block text-gray-700 font-medium">Фамилия</label>
+            <input
+              type="text"
+              [(ngModel)]="formValues.lastName"
+              name="lastName"
+              class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+              required
+            />
+          </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Имя</label>
+          <input
+            type="text"
+            [(ngModel)]="formValues.firstName"
+            name="firstName"
+            class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Отчество</label>
+          <input
+            type="text"
+            [(ngModel)]="formValues.middleName"
+            name="middleName"
+            class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+            required
+          />
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium">Год рождения</label>
+          <input
+            type="number"
+            [(ngModel)]="formValues.birthYear"
+            name="birthYear"
+            class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+            required
+          />
+        </div>
+        <div class="flex justify-end space-x-4">
+          <button
+            type="submit"
+            class="bg-green-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-green-700"
+          >
+            Создать
+          </button>
+          <button
+            type="button"
+            (click)="isFormVisible = false"
+            class="bg-gray-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-700"
+          >
+            Отмена
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="p-6 rounded-lg shadow-lg mt-3">
+      <div class="flex mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">
+          <ng-container *ngIf="!error">
+            <ng-container *ngIf="totalCount > 0"
+              >Авторы ({{ totalCount }})</ng-container
+            >
+            <ng-container *ngIf="totalCount === 0"
+              >Пусто, необходимо добавить авторов</ng-container
+            >
+          </ng-container>
+        </h2>
+        <button
+          *ngIf="!isFormVisible"
+          (click)="isFormVisible = true"
+          class="bg-blue-500 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 ms-auto"
+        >
+          Добавить
+        </button>
+      </div>
+
+      <div
+        *ngIf="error"
+        class="flex bg-red-100 text-red-500 font-semibold p-4 rounded-lg"
+      >
+        Ошибка загрузки данных
+      </div>
+
+      <div *ngIf="error">
+        <div class="flex bg-red-100 text-red-500 font-semibold p-4 rounded-lg">
+          Ошибка загрузки данных
+        </div>
+      </div>
+
+      <div *ngIf="!error">
+        <table
+          class="w-full border-collapse border border-gray-200 rounded-lg overflow-hidden"
+        >
+          <thead>
+            <tr class="bg-gray-200 text-gray-700 uppercase text-sm">
+              <th class="py-3 px-4 border border-gray-300">Фамилия</th>
+              <th class="py-3 px-4 border border-gray-300">Имя</th>
+              <th class="py-3 px-4 border border-gray-300">Отчество</th>
+              <th class="py-3 px-4 border border-gray-300 w-[10%]">
+                Год рождения
+              </th>
+              <th class="py-3 px-4 border border-gray-300 w-[10%]">Действия</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let author of authors"
+              class="border border-gray-300 bg-white hover:bg-gray-100 transition"
+            >
+              <td class="py-3 px-4 border border-gray-300">
+                <a
+                  [routerLink]="['/authors', author.id]"
+                  class="block w-full h-full hover:text-blue-700"
+                >
+                  <span class="text-blue-500">↗</span>
+                  <span>{{ author.lastName }}</span>
+                </a>
+              </td>
+              <td class="py-3 px-4 border border-gray-300">
+                {{ author.firstName }}
+              </td>
+              <td class="py-3 px-4 border border-gray-300">
+                {{ author.middleName }}
+              </td>
+              <td class="py-3 px-4 border border-gray-300">
+                {{ author.birthYear }}
+              </td>
+              <td class="py-3 px-4 border border-gray-300">
+                <div class="flex gap-1">
+                  <a
+                    [routerLink]="['/authors', author.id]"
+                    [queryParams]="{ edit: '' }"
+                    [state]="routerLinkState"
+                    class="border-blue-500 border-2 text-white font-semibold py-2 px-3 rounded-lg hover:bg-blue-500 transition duration-300 ease-in-out"
+                  >
+                    ✏️
+                  </a>
+                  <button
+                    (click)="handleDeleteAuthor(author.id)"
+                    class="border-red-500 border-2 text-white font-semibold py-2 px-3 rounded-lg hover:bg-red-500 transition duration-300 ease-in-out"
+                  >
+                    🗑️
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <app-pagination
+          [currentPage]="queryParams.page"
+          [totalPages]="totalPages"
+          (pageChange)="handlePageChange($event)"
+        >
+        </app-pagination>
+      </div>
+    </div>
+  </div>
+</div>

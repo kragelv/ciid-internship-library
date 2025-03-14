@@ -1,0 +1,18 @@
+<div *ngIf="error" class="text-red-500">{{ error }}</div>
+
+<div
+  class="select-container overflow-y-auto border border-gray-300 mt-5"
+  (scroll)="onScroll($event)"
+>
+  <select
+    (change)="onSelectionChange($event)"
+    class="form-select w-full p-2 text-gray-700"
+    [disabled]="loading"
+  >
+    <option *ngFor="let item of data$ | async" [value]="item.id">
+      {{ authorToString(item) }}
+    </option>
+  </select>
+</div>
+
+<div *ngIf="loading" class="text-center text-gray-500 mt-4">Загрузка...</div>

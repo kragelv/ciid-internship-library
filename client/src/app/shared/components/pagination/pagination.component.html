@@ -1,0 +1,73 @@
+<div class="flex justify-center mt-4">
+    <nav aria-label="Page navigation">
+      <ul class="flex list-none border border-gray-300 rounded-lg overflow-hidden">
+        <li>
+          <button
+            class="px-3 py-2 border-r border-gray-300"
+            [ngClass]="{
+              'text-gray-400 cursor-not-allowed': currentPage === 1,
+              'hover:bg-gray-200': currentPage !== 1
+            }"
+            (click)="handlePrev()"
+            [disabled]="currentPage === 1"
+          >
+            &laquo;
+          </button>
+        </li>
+  
+        <li *ngIf="needFirst">
+          <button
+            class="px-3 py-2 border-r border-gray-300"
+            [ngClass]="{
+              'bg-blue-500 text-white': currentPage === FISRT_PAGE,
+              'hover:bg-gray-200': currentPage !== FISRT_PAGE
+            }"
+            (click)="handlePageClick(FISRT_PAGE)"
+          >
+            {{ FISRT_PAGE }}
+          </button>
+        </li>
+  
+        <li *ngFor="let page of pageNumbersRange(start, end)">
+          <button
+            class="px-3 py-2 border-r border-gray-300"
+            [ngClass]="{
+              'bg-blue-500 text-white': currentPage === page,
+              'hover:bg-gray-200': currentPage !== page
+            }"
+            (click)="handlePageClick(page)"
+          >
+            {{ page }}
+          </button>
+        </li>
+  
+        <li *ngIf="needLast">
+          <button
+            class="px-3 py-2 border-r border-gray-300"
+            [ngClass]="{
+              'bg-blue-500 text-white': currentPage === totalPages,
+              'hover:bg-gray-200': currentPage !== totalPages
+            }"
+            (click)="handlePageClick(totalPages)"
+          >
+            {{ totalPages }}
+          </button>
+        </li>
+  
+        <li>
+          <button
+            class="px-3 py-2"
+            [ngClass]="{
+              'text-gray-400 cursor-not-allowed': currentPage === totalPages,
+              'hover:bg-gray-200': currentPage !== totalPages
+            }"
+            (click)="handleNext()"
+            [disabled]="currentPage === totalPages"
+          >
+            &raquo;
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  
