@@ -23,7 +23,7 @@
 
           <div class="mb-4">
             <label class="block text-gray-700 font-medium">Автор</label>
-            <app-authors-async-select (change)="changeAuthor($event)" ></app-authors-async-select>
+            <app-authors-async-select (changeSelect)="handleChangeAuthor($event)" ></app-authors-async-select>
           </div>
 
           <div class="mb-4">
@@ -49,7 +49,7 @@
   
           <div class="mb-4">
             <label class="block text-gray-700 font-medium">Жанры</label>
-            <app-genres-async-multi-select ></app-genres-async-multi-select>
+            <app-genres-async-multi-select (changeSelect)="handleChangeGenres($event)"></app-genres-async-multi-select>
           </div>
   
           <div class="flex justify-end space-x-4">

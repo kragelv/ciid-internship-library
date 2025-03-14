@@ -1,5 +1,5 @@
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { catchError, map, Observable, switchMap } from 'rxjs';
 import { GenresAsyncMultiSelectService } from '../../services/genres-async-multi-select.service';
 
@@ -8,12 +8,14 @@ import { GenresAsyncMultiSelectService } from '../../services/genres-async-multi
   imports: [NgIf, NgFor, AsyncPipe],
   templateUrl: './genres-async-multi-select.component.html',
 })
-export class GenresAsyncMultiSelectComponent implements OnInit {
+export class GenresAsyncMultiSelectComponent {
   data$: Observable<any[]>;
   totalCount$: Observable<number>;
   loading: boolean = false;
   error: string | null = null;
   currentPage: number = 1;
+
+  @Output() changeSelect: EventEmitter<string[]> = new EventEmitter<string[]>();
 
   constructor(private asyncSelectService: GenresAsyncMultiSelectService) {
     this.data$ = this.asyncSelectService.currentPage$.pipe(
@@ -32,9 +34,7 @@ export class GenresAsyncMultiSelectComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
-
-  onScroll(event: any): void {
+  onScroll(event: any) {
     const bottom =
       event.target.scrollHeight ===
       event.target.scrollTop + event.target.clientHeight;
@@ -45,7 +45,12 @@ export class GenresAsyncMultiSelectComponent implements OnInit {
     }
   }
 
-  onSelectionChange(event: any): void {
-    console.log('Selected:', event.target.value);
+  onSelectionChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    if (!select) return this.changeSelect.emit([]);
+
+    this.changeSelect.emit(
+      Array.from(select.selectedOptions, (option) => option.value)
+    );
   }
 }

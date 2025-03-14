@@ -14,7 +14,7 @@ export class GenresAsyncMultiSelectService {
   constructor(private genreService: GenreService) {}
 
   loadData(page: number): Observable<PageResponse<Genre>> {
-    return this.genreService.getPage({ page }).pipe(
+    return this.genreService.getPage({ page, limit: 4 }).pipe(
       catchError((error) => {
         console.error('Error fetching data', error);
         throw error;

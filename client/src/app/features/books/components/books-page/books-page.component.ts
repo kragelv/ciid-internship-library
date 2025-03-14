@@ -35,7 +35,7 @@ export class BooksPageComponent implements OnInit {
     authorId: '',
     publishedYear: null,
     availableCopies: 0,
-    genreIds: [],
+    genreIds: [] as string[],
   };
 
   error = false;
@@ -102,6 +102,7 @@ export class BooksPageComponent implements OnInit {
   }
 
   handleCreateBook() {
+    console.log(this.formValues);
     this.bookService.create(this.formValues).subscribe(() => {
       this.formValues = { ...this.initialValues };
       this.isFormVisible = false;
@@ -140,7 +141,11 @@ export class BooksPageComponent implements OnInit {
     });
   }
 
-  changeAuthor(authorId: any) {
-    this.formValues.authorId = authorId;
+  handleChangeAuthor(authorId: string | null) {
+    this.formValues.authorId = authorId || '';
+  }
+
+  handleChangeGenres(genreIds: string[]) {
+    this.formValues.genreIds = genreIds;
   }
 }

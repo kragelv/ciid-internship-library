@@ -1,22 +1,25 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { catchError, map, Observable, switchMap } from 'rxjs';
-import { AuthorsAsyncSelectService } from '../../services/authors-async-select.service';
 import { AsyncPipe, NgFor, NgIf } from '@angular/common';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { catchError, map, Observable, switchMap } from 'rxjs';
 import { authorToString } from '../../../../shared/utils/data.utils';
+import { Author } from '../../../authors/models/author.model';
+import { AuthorsAsyncSelectService } from '../../services/authors-async-select.service';
 
 @Component({
   selector: 'app-authors-async-select',
   imports: [NgIf, NgFor, AsyncPipe],
   templateUrl: './authors-async-select.component.html',
 })
-export class AuthorsAsyncSelectComponent implements OnInit {
-  data$: Observable<any[]>;
+export class AuthorsAsyncSelectComponent {
+  data$: Observable<Author[]>;
   totalCount$: Observable<number>;
   loading: boolean = false;
   error: string | null = null;
   currentPage: number = 1;
 
-  @Output() onChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() changeSelect: EventEmitter<string | null> = new EventEmitter<
+    string | null
+  >();
 
   constructor(private asyncSelectService: AuthorsAsyncSelectService) {
     this.data$ = this.asyncSelectService.currentPage$.pipe(
@@ -35,9 +38,7 @@ export class AuthorsAsyncSelectComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
-
-  onScroll(event: any): void {
+  onScroll(event: any) {
     const bottom =
       event.target.scrollHeight ===
       event.target.scrollTop + event.target.clientHeight;
@@ -48,11 +49,16 @@ export class AuthorsAsyncSelectComponent implements OnInit {
     }
   }
 
-  onSelectionChange(event: any): void {
-    this.onChange.emit(event.target.value);
+  onSelectionChange(event: Event) {
+    const select = event.target as HTMLSelectElement;
+    if (!select || select.selectedIndex === -1)
+      return this.changeSelect.emit(null);
+
+    const selectedAuthorId = select.value;
+    this.changeSelect.emit(selectedAuthorId);
   }
 
-  authorToString(item: any) {
+  authorToString(item: Author) {
     return authorToString(item);
   }
 }
