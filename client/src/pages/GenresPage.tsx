@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useEffect, useState } from 'react';
+import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import Loader from '../components/Loader';
@@ -11,8 +11,8 @@ import { calcTotalPages } from '../utils';
 
 const extractQueryParams = (searchParams: URLSearchParams): PageQueryParams => {
   const queryParams: PageQueryParams = {
-    limit: Number(searchParams.get('limit')) || GenreService.DEFAULT_LIMIT,
     page: Number(searchParams.get('page')) || 1,
+    limit: Number(searchParams.get('limit')) || GenreService.DEFAULT_LIMIT,
   };
   return queryParams;
 };
@@ -26,17 +26,17 @@ const GenresPage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [genreName, setGenreName] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
-  const [queryParams, setQueryParams] = useState<PageQueryParams>({
-    page: 1,
-    limit: GenreService.DEFAULT_LIMIT,
-  });
+  const [queryParams, setQueryParams] = useState<PageQueryParams>(extractQueryParams(searchParams));
 
   useEffect(() => {
-    setQueryParams(extractQueryParams(searchParams));
+    setQueryParams((prev) => {
+      const queryParams = extractQueryParams(searchParams);
+      return { ...prev, ...queryParams };
+    });
   }, [searchParams]);
 
   useEffect(() => {
-    fetchPage(queryParams);
+    fetchPage({ ...queryParams });
   }, [queryParams]);
 
   const updateSearchParams = (newPageParams: PageQueryParams) => {

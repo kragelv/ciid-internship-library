@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useSearchParams } from 'react-router';
 
-import Loader from '../components/Loader';
-import StateFromLink from '../components/StateFromLink';
 import {
   AuthorAsyncPaginate,
   AuthorOptionType,
@@ -13,13 +11,15 @@ import {
   GenreOptionType,
   mapGenreToOption,
 } from '../components/GenreMultiAsyncPaginate';
+import Loader from '../components/Loader';
+import StateFromLink from '../components/StateFromLink';
 
-import { BookRequestDto } from '../dtos/book/BookRequestDto';
-import BookService from '../services/BookService';
-import { useReactRouterStateFrom } from '../hooks';
-import { BookDto } from '../dtos/book/BookDto';
-import { authorToString } from '../utils';
 import { AuthorDto } from '../dtos/author/AuthorDto';
+import { BookDto } from '../dtos/book/BookDto';
+import { BookRequestDto } from '../dtos/book/BookRequestDto';
+import { useReactRouterStateFrom } from '../hooks';
+import BookService from '../services/BookService';
+import { authorToString } from '../utils';
 
 interface BookFormValues {
   title: string;
@@ -185,6 +185,7 @@ const BookPage = () => {
                         publishedYear: Number(e.target.value),
                       })
                     }
+                    min="0"
                   />
                 </div>
 
@@ -200,6 +201,7 @@ const BookPage = () => {
                         availableCopies: Number(e.target.value),
                       })
                     }
+                    min="0"
                     required
                   />
                 </div>

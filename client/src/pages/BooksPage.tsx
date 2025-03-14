@@ -2,20 +2,20 @@ import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import { AuthorAsyncPaginate, AuthorOptionType } from '../components/AuthorAsyncPaginate';
+import { GenreMultiAsyncPaginate, GenreOptionType } from '../components/GenreMultiAsyncPaginate';
 import Loader from '../components/Loader';
 import Pagination from '../components/Pagination';
+import StateFromLink from '../components/StateFromLink';
 import { BookDto } from '../dtos/book/BookDto';
+import { BookRequestDto } from '../dtos/book/BookRequestDto';
 import { PageQueryParams } from '../dtos/page/PageQueryParams';
 import BookService from '../services/BookService';
 import { authorToString, calcTotalPages } from '../utils';
-import StateFromLink from '../components/StateFromLink';
-import { GenreMultiAsyncPaginate, GenreOptionType } from '../components/GenreMultiAsyncPaginate';
-import { BookRequestDto } from '../dtos/book/BookRequestDto';
 
 const extractQueryParams = (searchParams: URLSearchParams): PageQueryParams => {
   const queryParams: PageQueryParams = {
-    limit: Number(searchParams.get('limit')) || BookService.DEFAULT_LIMIT,
     page: Number(searchParams.get('page')) || 1,
+    limit: Number(searchParams.get('limit')) || BookService.DEFAULT_LIMIT,
   };
   return queryParams;
 };
@@ -56,17 +56,17 @@ const BooksPage = () => {
   const [bookFormValues, setBookFormValues] = useState(initialValues);
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const [queryParams, setQueryParams] = useState<PageQueryParams>({
-    page: 1,
-    limit: BookService.DEFAULT_LIMIT,
-  });
+  const [queryParams, setQueryParams] = useState<PageQueryParams>(extractQueryParams(searchParams));
 
   useEffect(() => {
-    setQueryParams(extractQueryParams(searchParams));
+    setQueryParams((prev) => {
+      const queryParams = extractQueryParams(searchParams);
+      return { ...prev, ...queryParams };
+    });
   }, [searchParams]);
 
   useEffect(() => {
-    fetchPage(queryParams);
+    fetchPage({ ...queryParams });
   }, [queryParams]);
 
   const updateSearchParams = (newPageParams: PageQueryParams) => {
@@ -170,7 +170,7 @@ const BooksPage = () => {
                       })
                     }
                     className="mt-2 p-2 border border-gray-300 rounded-lg w-full"
-                    required
+                    min="0"
                   />
                 </div>
 
@@ -186,6 +186,7 @@ const BooksPage = () => {
                       })
                     }
                     className="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+                    min="0"
                     required
                   />
                 </div>
