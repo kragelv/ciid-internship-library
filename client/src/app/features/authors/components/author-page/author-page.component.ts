@@ -52,9 +52,8 @@ export class AuthorPageComponent {
     private authorService: AuthorService,
     private routerStateService: RouterStateService
   ) {
-    this.routerEditLinkState = { from: { path: router.url } };
+    this.routerEditLinkState = { from: { path: this.DEFAULT_BACK_URL } };
     this.backUrl = history.state?.from || { path: this.DEFAULT_BACK_URL };
-    console.log(this.backUrl);
   }
 
   ngOnInit() {

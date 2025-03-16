@@ -1,56 +1,66 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { catchError, map, Observable, switchMap } from 'rxjs';
-import { GenresAsyncMultiSelectService } from '../../services/genres-async-multi-select.service';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { PageResponse } from '../../../../shared/models/page/page-response.model';
+import { Genre } from '../../../genre/models/genre.model';
+import { GenreService } from '../../../genre/services/genre.service';
 
 @Component({
   selector: 'app-genres-async-multi-select',
-  imports: [NgIf, NgFor, AsyncPipe],
+  imports: [NgSelectComponent],
   templateUrl: './genres-async-multi-select.component.html',
 })
-export class GenresAsyncMultiSelectComponent {
-  data$: Observable<any[]>;
-  totalCount$: Observable<number>;
+export class GenresAsyncMultiSelectComponent implements OnInit {
+  readonly numberOfItemsFromEndBeforeFetchingMore = 5;
+
+  genres: Genre[] = [];
+  totalCount: number = 0;
+  currentPage: number = 1;
+  hasMore: boolean = true;
   loading: boolean = false;
   error: string | null = null;
-  currentPage: number = 1;
 
-  @Output() changeSelect: EventEmitter<string[]> = new EventEmitter<string[]>();
+  @Output() selectChange = new EventEmitter<string[]>();
 
-  constructor(private asyncSelectService: GenresAsyncMultiSelectService) {
-    this.data$ = this.asyncSelectService.currentPage$.pipe(
-      switchMap((page) => this.asyncSelectService.loadData(page)),
-      map((response) => response.data),
-      catchError((error) => {
-        this.error = 'Ошибка загрузки данных';
-        this.loading = false;
-        throw error;
-      })
-    );
+  constructor(private genreService: GenreService) {}
 
-    this.totalCount$ = this.asyncSelectService.currentPage$.pipe(
-      switchMap((page) => this.asyncSelectService.loadData(page)),
-      map((response) => response.total)
-    );
+  ngOnInit(): void {
+    this.loadMore();
   }
 
-  onScroll(event: any) {
-    const bottom =
-      event.target.scrollHeight ===
-      event.target.scrollTop + event.target.clientHeight;
-    if (bottom && !this.loading) {
-      this.loading = true;
-      this.currentPage += 1;
-      this.asyncSelectService.setPage(this.currentPage);
+  loadMore(): void {
+    if (this.loading || !this.hasMore) return;
+    this.loading = true;
+
+    this.genreService.getPage({ page: this.currentPage }).subscribe({
+      next: (response: PageResponse<Genre>) => {
+        this.genres = [...this.genres, ...response.data];
+        this.totalCount = response.total;
+        this.hasMore = this.genres.length < this.totalCount;
+        this.currentPage++;
+      },
+      error: () => {
+        this.error = 'Ошибка загрузки данных';
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  onScroll({ end }: any): void {
+    if (
+      end + this.numberOfItemsFromEndBeforeFetchingMore >=
+      this.genres.length
+    ) {
+      this.loadMore();
     }
   }
 
-  onSelectionChange(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    if (!select) return this.changeSelect.emit([]);
+  onScrollToEnd(): void {
+    this.loadMore();
+  }
 
-    this.changeSelect.emit(
-      Array.from(select.selectedOptions, (option) => option.value)
-    );
+  onSelectChange(event: any): void {
+    this.selectChange.emit(event.map((item: any) => item.id));
   }
 }

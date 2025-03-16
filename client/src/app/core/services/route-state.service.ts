@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { combineLatest } from 'rxjs';
+import { NavigationEnd, PRIMARY_OUTLET, Router } from '@angular/router';
+import { BehaviorSubject, filter, Observable } from 'rxjs';
 import { RouterStateFromType } from '../models/router-state-from.model';
 
 @Injectable({
@@ -11,7 +10,7 @@ export class RouterStateService {
   private routerStateSubject: BehaviorSubject<RouterStateFromType | null>;
   public routerState: Observable<RouterStateFromType | null>;
 
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private router: Router) {
     this.routerStateSubject = new BehaviorSubject<RouterStateFromType | null>(
       null
     );
@@ -21,20 +20,16 @@ export class RouterStateService {
   }
 
   private initRouteTracking(): void {
-    combineLatest([
-      this.route.url,
-      this.route.queryParams,
-      this.route.fragment,
-    ]).subscribe(([urlSegments, queryParams, fragment]) => {
-      console.log('subscribe router', urlSegments);
-      console.log('subscribe router', queryParams);
-      console.log('subscribe router', fragment);
-      const routerState = {
-        path: '/' + urlSegments.join('/'),
-        queryParams: queryParams,
-        fragment: fragment === null ? undefined : fragment,
-      };
-      this.routerStateSubject.next(routerState);
-    });
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        const urlTree = this.router.parseUrl(event.urlAfterRedirects);
+        const g = urlTree.root.children[PRIMARY_OUTLET];
+        this.routerStateSubject.next({
+          path: '/' + g.segments.map((segment) => segment.path).join('/'),
+          queryParams: urlTree.queryParams,
+          fragment: urlTree.fragment || undefined,
+        });
+      });
   }
 }

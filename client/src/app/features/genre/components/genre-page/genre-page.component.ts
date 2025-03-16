@@ -1,20 +1,18 @@
+import { NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   ActivatedRoute,
   NavigationEnd,
-  Params,
   Router,
   RouterLink,
-  RouterLinkWithHref,
 } from '@angular/router';
-import { GenreService } from '../../services/genre.service';
-import { Genre } from '../../models/genre.model';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
-import { FormsModule } from '@angular/forms';
 import { filter } from 'rxjs';
 import { RouterStateFromType } from '../../../../core/models/router-state-from.model';
 import { RouterStateService } from '../../../../core/services/route-state.service';
+import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
+import { Genre } from '../../models/genre.model';
+import { GenreService } from '../../services/genre.service';
 
 @Component({
   selector: 'app-genre-page',
@@ -46,9 +44,8 @@ export class GenrePageComponent {
     private genreService: GenreService,
     private routerStateService: RouterStateService
   ) {
-    this.routerEditLinkState = { from: { path: router.url } };
+    this.routerEditLinkState = { from: { path: this.DEFAULT_BACK_URL } };
     this.backUrl = history.state?.from || { path: this.DEFAULT_BACK_URL };
-    console.log(this.backUrl);
   }
 
   ngOnInit() {

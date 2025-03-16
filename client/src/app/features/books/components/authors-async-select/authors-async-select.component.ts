@@ -1,64 +1,79 @@
-import { AsyncPipe, NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
-import { catchError, map, Observable, switchMap } from 'rxjs';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  NgLabelTemplateDirective,
+  NgOptionTemplateDirective,
+  NgSelectComponent,
+} from '@ng-select/ng-select';
+import { PageResponse } from '../../../../shared/models/page/page-response.model';
 import { authorToString } from '../../../../shared/utils/data.utils';
 import { Author } from '../../../authors/models/author.model';
-import { AuthorsAsyncSelectService } from '../../services/authors-async-select.service';
+import { AuthorService } from '../../../authors/services/author.service';
 
 @Component({
   selector: 'app-authors-async-select',
-  imports: [NgIf, NgFor, AsyncPipe],
+  imports: [
+    NgSelectComponent,
+    NgLabelTemplateDirective,
+    NgOptionTemplateDirective,
+  ],
   templateUrl: './authors-async-select.component.html',
 })
-export class AuthorsAsyncSelectComponent {
-  data$: Observable<Author[]>;
-  totalCount$: Observable<number>;
+export class AuthorsAsyncSelectComponent implements OnInit {
+  readonly numberOfItemsFromEndBeforeFetchingMore = 5;
+
+  authors: Author[] = [];
+  totalCount: number = 0;
+  currentPage: number = 1;
+  hasMore: boolean = true;
   loading: boolean = false;
   error: string | null = null;
-  currentPage: number = 1;
 
-  @Output() changeSelect: EventEmitter<string | null> = new EventEmitter<
-    string | null
-  >();
+  @Output() selectChange = new EventEmitter<string | null>();
 
-  constructor(private asyncSelectService: AuthorsAsyncSelectService) {
-    this.data$ = this.asyncSelectService.currentPage$.pipe(
-      switchMap((page) => this.asyncSelectService.loadData(page)),
-      map((response) => response.data),
-      catchError((error) => {
-        this.error = 'Ошибка загрузки данных';
-        this.loading = false;
-        throw error;
-      })
-    );
+  constructor(private authorService: AuthorService) {}
 
-    this.totalCount$ = this.asyncSelectService.currentPage$.pipe(
-      switchMap((page) => this.asyncSelectService.loadData(page)),
-      map((response) => response.total)
-    );
+  ngOnInit(): void {
+    this.loadMore();
   }
 
-  onScroll(event: any) {
-    const bottom =
-      event.target.scrollHeight ===
-      event.target.scrollTop + event.target.clientHeight;
-    if (bottom && !this.loading) {
-      this.loading = true;
-      this.currentPage += 1;
-      this.asyncSelectService.setPage(this.currentPage);
+  loadMore(): void {
+    if (this.loading || !this.hasMore) return;
+    this.loading = true;
+
+    this.authorService.getPage({ page: this.currentPage }).subscribe({
+      next: (response: PageResponse<Author>) => {
+        this.authors = [...this.authors, ...response.data];
+        this.totalCount = response.total;
+        this.hasMore = this.authors.length < this.totalCount;
+        this.currentPage++;
+      },
+      error: () => {
+        this.error = 'Ошибка загрузки данных';
+      },
+      complete: () => {
+        this.loading = false;
+      },
+    });
+  }
+
+  onScroll({ end }: any): void {
+    if (
+      end + this.numberOfItemsFromEndBeforeFetchingMore >=
+      this.authors.length
+    ) {
+      this.loadMore();
     }
   }
 
-  onSelectionChange(event: Event) {
-    const select = event.target as HTMLSelectElement;
-    if (!select || select.selectedIndex === -1)
-      return this.changeSelect.emit(null);
-
-    const selectedAuthorId = select.value;
-    this.changeSelect.emit(selectedAuthorId);
+  onScrollToEnd(): void {
+    this.loadMore();
   }
 
-  authorToString(item: Author) {
+  onSelectChange(event: any): void {
+    this.selectChange.emit(event.id);
+  }
+
+  authorToString(item: Author): string {
     return authorToString(item);
   }
 }

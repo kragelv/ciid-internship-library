@@ -26,6 +26,8 @@ import { AuthorService } from '../../services/author.service';
   ],
 })
 export class AuthorsPageComponent implements OnInit {
+  readonly DEFAULT_BACK_URL = '/authors';
+
   readonly initialValues = {
     firstName: '',
     middleName: '',
@@ -55,7 +57,7 @@ export class AuthorsPageComponent implements OnInit {
     private router: Router,
     private routerStateService: RouterStateService
   ) {
-    this.routerLinkState = { from: { path: router.url } };
+    this.routerLinkState = { from: { path: this.DEFAULT_BACK_URL } };
   }
 
   ngOnInit() {

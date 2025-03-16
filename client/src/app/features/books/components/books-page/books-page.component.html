@@ -23,7 +23,7 @@
 
           <div class="mb-4">
             <label class="block text-gray-700 font-medium">Автор</label>
-            <app-authors-async-select (changeSelect)="handleChangeAuthor($event)" ></app-authors-async-select>
+            <app-authors-async-select (selectChange)="handleChangeAuthor($event)" ></app-authors-async-select>
           </div>
 
           <div class="mb-4">
@@ -33,6 +33,7 @@
               [(ngModel)]="formValues.publishedYear"
               name="publishedYear"
               class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+              min="0"
             />
           </div>
 
@@ -43,13 +44,14 @@
               [(ngModel)]="formValues.availableCopies"
               name="availableCopies"
               class="mt-2 p-2 border border-gray-300 rounded-lg w-full"
+              min="0"
               required
             />
           </div>
   
           <div class="mb-4">
             <label class="block text-gray-700 font-medium">Жанры</label>
-            <app-genres-async-multi-select (changeSelect)="handleChangeGenres($event)"></app-genres-async-multi-select>
+            <app-genres-async-multi-select (selectChange)="handleChangeGenres($event)"></app-genres-async-multi-select>
           </div>
   
           <div class="flex justify-end space-x-4">
@@ -118,21 +120,19 @@
                 class="border border-gray-300 bg-white hover:bg-gray-100 transition"
               >
                 <td class="py-3 px-4 border border-gray-300">
-                  <a
-                    [routerLink]="['/authors', book.author.id]"
-                    class="block w-full h-full hover:text-blue-700"
-                  >
-                    <span class="text-blue-500">↗</span>
-                    <span>{{ book.author.lastName }} {{ book.author.firstName }}</span>
-                  </a>
+                  {{  authorToString(book.author) }}
                 </td>
-                <td class="py-3 px-4 border border-gray-300">{{ book.title }}</td>
+                <td class="py-3 px-4 border border-gray-300"><a
+                  [routerLink]="['/books', book.id]"
+                  class="block w-full h-full hover:text-blue-700"
+                >
+                  <span class="text-blue-500">↗</span>
+                  <span>{{ book.title }}</span>
+                </a></td>
                 <td class="py-3 px-4 border border-gray-300">{{ book.publishedYear }}</td>
                 <td class="py-3 px-4 border border-gray-300">{{ book.availableCopies }}</td>
                 <td class="py-3 px-4 border border-gray-300">
-                  <span *ngFor="let genre of book.genres">
-                    {{ genre.name }}
-                  </span>
+                  {{ genresToString(book.genres) }}
                 </td>
                 <td class="py-3 px-4 border border-gray-300">
                   <div class="flex gap-1">

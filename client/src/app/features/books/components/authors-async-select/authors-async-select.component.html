@@ -1,19 +1,17 @@
-<div *ngIf="error" class="text-red-500">{{ error }}</div>
-
-<div
-  class="select-container overflow-y-auto"
+<ng-select
+  [items]="authors"
+  [virtualScroll]="true"
+  bindValue="id"
+  [loading]="loading"
+  appendTo="body"
   (scroll)="onScroll($event)"
+  (scrollToEnd)="onScrollToEnd()"
+  (change)="onSelectChange($event)" 
 >
-  <select
-    (change)="onSelectionChange($event)"
-    class="form-select border border-gray-300 rounded-lg w-full p-2"
-    [disabled]="loading"
-    required
-  >
-    <option *ngFor="let item of data$ | async" [value]="item.id">
-      {{ authorToString(item) }}
-    </option>
-  </select>
-</div>
-
-<div *ngIf="loading" class="text-center text-gray-500 mt-4">Загрузка...</div>
+  <ng-template ng-label-tmp let-item="item">
+    {{ authorToString(item) }}
+  </ng-template>
+  <ng-template ng-option-tmp let-item="item">
+    {{ authorToString(item) }}
+  </ng-template>
+</ng-select>

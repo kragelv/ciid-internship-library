@@ -1,18 +1,17 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
-import { Genre } from '../../models/genre.model';
-import { PageQueryParams } from '../../../../shared/models/page/page-query-params.model';
-import { GenreService } from '../../services/genre.service';
-import { combineLatest, switchMap } from 'rxjs';
-import { PageResponse } from '../../../../shared/models/page/page-response.model';
-import { calcTotalPages } from '../../../../shared/utils/data.utils';
-import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
-import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { NgFor, NgIf } from '@angular/common';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, Params, Router, RouterLink } from '@angular/router';
 import { RouterStateFromType } from '../../../../core/models/router-state-from.model';
 import { RouterStateService } from '../../../../core/services/route-state.service';
+import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
+import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
+import { PageQueryParams } from '../../../../shared/models/page/page-query-params.model';
+import { PageResponse } from '../../../../shared/models/page/page-response.model';
+import { calcTotalPages } from '../../../../shared/utils/data.utils';
+import { Genre } from '../../models/genre.model';
+import { GenreService } from '../../services/genre.service';
 
 @Component({
   selector: 'app-genres-page',
@@ -27,6 +26,8 @@ import { RouterStateService } from '../../../../core/services/route-state.servic
   ],
 })
 export class GenresPageComponent implements OnInit {
+  readonly DEFAULT_BACK_URL = '/genres';
+
   error = false;
   loading = false;
   genres: Genre[] = [];
@@ -51,7 +52,7 @@ export class GenresPageComponent implements OnInit {
     private router: Router,
     private routerStateService: RouterStateService
   ) {
-    this.routerLinkState = { from: { path: router.url } };
+    this.routerLinkState = { from: { path: this.DEFAULT_BACK_URL } };
   }
 
   ngOnInit() {
@@ -65,7 +66,6 @@ export class GenresPageComponent implements OnInit {
 
     this.routerStateService.routerState.subscribe((state) => {
       if (state) {
-        console.log(state);
         this.routerLinkState.from = state;
       }
     });

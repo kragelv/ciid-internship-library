@@ -9,8 +9,11 @@ import { LoaderComponent } from '../../../../shared/components/loader/loader.com
 import { PaginationComponent } from '../../../../shared/components/pagination/pagination.component';
 import { PageQueryParams } from '../../../../shared/models/page/page-query-params.model';
 import { PageResponse } from '../../../../shared/models/page/page-response.model';
-import { calcTotalPages } from '../../../../shared/utils/data.utils';
-import { Book } from '../../models/book.model';
+import {
+  authorToString,
+  calcTotalPages,
+} from '../../../../shared/utils/data.utils';
+import { Book, BookAuthor, BookGenre } from '../../models/book.model';
 import { BookService } from '../../services/book.service';
 import { AuthorsAsyncSelectComponent } from '../authors-async-select/authors-async-select.component';
 import { GenresAsyncMultiSelectComponent } from '../genres-async-multi-select/genres-async-multi-select.component';
@@ -30,6 +33,8 @@ import { GenresAsyncMultiSelectComponent } from '../genres-async-multi-select/ge
   ],
 })
 export class BooksPageComponent implements OnInit {
+  readonly DEFAULT_BACK_URL = '/books';
+
   readonly initialValues = {
     title: '',
     authorId: '',
@@ -60,7 +65,7 @@ export class BooksPageComponent implements OnInit {
     private router: Router,
     private routerStateService: RouterStateService
   ) {
-    this.routerLinkState = { from: { path: router.url } };
+    this.routerLinkState = { from: { path: this.DEFAULT_BACK_URL } };
   }
 
   ngOnInit() {
@@ -102,7 +107,6 @@ export class BooksPageComponent implements OnInit {
   }
 
   handleCreateBook() {
-    console.log(this.formValues);
     this.bookService.create(this.formValues).subscribe(() => {
       this.formValues = { ...this.initialValues };
       this.isFormVisible = false;
@@ -147,5 +151,13 @@ export class BooksPageComponent implements OnInit {
 
   handleChangeGenres(genreIds: string[]) {
     this.formValues.genreIds = genreIds;
+  }
+
+  authorToString(author: BookAuthor): string {
+    return authorToString(author);
+  }
+
+  genresToString(genres: BookGenre[]): string {
+    return genres.map((genre) => genre.name).join(', ');
   }
 }
