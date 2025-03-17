@@ -41,8 +41,11 @@ const AuthorsPage = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    fetchPage({ ...queryParams });
-  }, [queryParams]);
+    fetchPage({
+      limit: queryParams.limit,
+      page: queryParams.page,
+    });
+  }, [queryParams.limit, queryParams.page]);
 
   const updateSearchParams = (newPageParams: PageQueryParams) => {
     const searchParams = new URLSearchParams();

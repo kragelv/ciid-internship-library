@@ -1,4 +1,4 @@
-import { FormEvent, MouseEvent, useEffect, useMemo, useState } from 'react';
+import { FormEvent, MouseEvent, useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router';
 
 import Loader from '../components/Loader';
@@ -36,8 +36,11 @@ const GenresPage = () => {
   }, [searchParams]);
 
   useEffect(() => {
-    fetchPage({ ...queryParams });
-  }, [queryParams]);
+    fetchPage({
+      limit: queryParams.limit,
+      page: queryParams.page,
+    });
+  }, [queryParams.limit, queryParams.page]);
 
   const updateSearchParams = (newPageParams: PageQueryParams) => {
     const searchParams = new URLSearchParams();
