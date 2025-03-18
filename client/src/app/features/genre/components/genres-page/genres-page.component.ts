@@ -37,10 +37,7 @@ export class GenresPageComponent implements OnInit {
   formValues = {
     name: '',
   };
-  queryParams: PageQueryParams = {
-    page: 1,
-    limit: GenreService.DEFAULT_LIMIT,
-  };
+  queryParams: PageQueryParams;
   routerLinkState: {
     from: RouterStateFromType;
   };
@@ -53,6 +50,7 @@ export class GenresPageComponent implements OnInit {
     private routerStateService: RouterStateService
   ) {
     this.routerLinkState = { from: { path: this.DEFAULT_BACK_URL } };
+    this.queryParams = { page: 1, limit: this.genreService.getDefaultLimit() };
   }
 
   ngOnInit() {
@@ -60,7 +58,7 @@ export class GenresPageComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.queryParams.page = Number(params['page']) || 1;
       this.queryParams.limit =
-        Number(params['limit']) || GenreService.DEFAULT_LIMIT;
+        Number(params['limit']) || this.genreService.getDefaultLimit();
       this.loadPage();
     });
 
@@ -81,7 +79,7 @@ export class GenresPageComponent implements OnInit {
         this.totalPages = calcTotalPages(
           response.total,
           this.queryParams.limit,
-          GenreService.DEFAULT_LIMIT
+          this.genreService.getDefaultLimit()
         );
       },
       error: () => {
@@ -121,7 +119,7 @@ export class GenresPageComponent implements OnInit {
     }
     if (
       newPageParams.limit &&
-      newPageParams.limit !== GenreService.DEFAULT_LIMIT
+      newPageParams.limit !== this.genreService.getDefaultLimit()
     ) {
       queryParams['limit'] = newPageParams.limit;
     }

@@ -32,11 +32,11 @@ export class AuthorsAsyncSelectComponent implements OnInit {
 
   constructor(private authorService: AuthorService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadMore();
   }
 
-  loadMore(): void {
+  loadMore() {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
 
@@ -56,7 +56,7 @@ export class AuthorsAsyncSelectComponent implements OnInit {
     });
   }
 
-  onScroll({ end }: any): void {
+  onScroll({ end }: any) {
     if (
       end + this.numberOfItemsFromEndBeforeFetchingMore >=
       this.authors.length
@@ -65,11 +65,11 @@ export class AuthorsAsyncSelectComponent implements OnInit {
     }
   }
 
-  onScrollToEnd(): void {
+  onScrollToEnd() {
     this.loadMore();
   }
 
-  onSelectChange(event: any): void {
+  onSelectChange(event: any) {
     this.selectChange.emit(event.id);
   }
 

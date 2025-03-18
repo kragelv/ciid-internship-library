@@ -50,10 +50,7 @@ export class BooksPageComponent implements OnInit {
   totalPages = 1;
   isFormVisible = false;
   formValues = { ...this.initialValues };
-  queryParams: PageQueryParams = {
-    page: 1,
-    limit: BookService.DEFAULT_LIMIT,
-  };
+  queryParams: PageQueryParams;
   routerLinkState: {
     from: RouterStateFromType;
   };
@@ -66,6 +63,7 @@ export class BooksPageComponent implements OnInit {
     private routerStateService: RouterStateService
   ) {
     this.routerLinkState = { from: { path: this.DEFAULT_BACK_URL } };
+    this.queryParams = { page: 1, limit: this.bookService.getDefaultLimit() };
   }
 
   ngOnInit() {
@@ -73,7 +71,7 @@ export class BooksPageComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.queryParams.page = Number(params['page']) || 1;
       this.queryParams.limit =
-        Number(params['limit']) || BookService.DEFAULT_LIMIT;
+        Number(params['limit']) || this.bookService.getDefaultLimit();
       this.loadPage();
     });
 
@@ -94,7 +92,7 @@ export class BooksPageComponent implements OnInit {
         this.totalPages = calcTotalPages(
           response.total,
           this.queryParams.limit,
-          BookService.DEFAULT_LIMIT
+          this.bookService.getDefaultLimit()
         );
       },
       error: () => {
@@ -134,7 +132,7 @@ export class BooksPageComponent implements OnInit {
     }
     if (
       newPageParams.limit &&
-      newPageParams.limit !== BookService.DEFAULT_LIMIT
+      newPageParams.limit !== this.bookService.getDefaultLimit()
     ) {
       queryParams['limit'] = newPageParams.limit;
     }

@@ -23,11 +23,11 @@ export class GenresAsyncMultiSelectComponent implements OnInit {
 
   constructor(private genreService: GenreService) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.loadMore();
   }
 
-  loadMore(): void {
+  loadMore() {
     if (this.loading || !this.hasMore) return;
     this.loading = true;
 
@@ -47,7 +47,7 @@ export class GenresAsyncMultiSelectComponent implements OnInit {
     });
   }
 
-  onScroll({ end }: any): void {
+  onScroll({ end }: any) {
     if (
       end + this.numberOfItemsFromEndBeforeFetchingMore >=
       this.genres.length
@@ -56,11 +56,11 @@ export class GenresAsyncMultiSelectComponent implements OnInit {
     }
   }
 
-  onScrollToEnd(): void {
+  onScrollToEnd() {
     this.loadMore();
   }
 
-  onSelectChange(event: any): void {
+  onSelectChange(event: any) {
     this.selectChange.emit(event.map((item: any) => item.id));
   }
 }

@@ -42,10 +42,7 @@ export class AuthorsPageComponent implements OnInit {
   totalPages = 1;
   isFormVisible = false;
   formValues = { ...this.initialValues };
-  queryParams: PageQueryParams = {
-    page: 1,
-    limit: AuthorService.DEFAULT_LIMIT,
-  };
+  queryParams: PageQueryParams;
   routerLinkState: {
     from: RouterStateFromType;
   };
@@ -58,6 +55,7 @@ export class AuthorsPageComponent implements OnInit {
     private routerStateService: RouterStateService
   ) {
     this.routerLinkState = { from: { path: this.DEFAULT_BACK_URL } };
+    this.queryParams = { page: 1, limit: this.authorService.getDefaultLimit() };
   }
 
   ngOnInit() {
@@ -65,7 +63,7 @@ export class AuthorsPageComponent implements OnInit {
     this.route.queryParams.subscribe((params) => {
       this.queryParams.page = Number(params['page']) || 1;
       this.queryParams.limit =
-        Number(params['limit']) || AuthorService.DEFAULT_LIMIT;
+        Number(params['limit']) || this.authorService.getDefaultLimit();
       this.loadPage();
     });
 
@@ -86,7 +84,7 @@ export class AuthorsPageComponent implements OnInit {
         this.totalPages = calcTotalPages(
           response.total,
           this.queryParams.limit,
-          AuthorService.DEFAULT_LIMIT
+          this.authorService.getDefaultLimit()
         );
       },
       error: () => {
@@ -126,7 +124,7 @@ export class AuthorsPageComponent implements OnInit {
     }
     if (
       newPageParams.limit &&
-      newPageParams.limit !== AuthorService.DEFAULT_LIMIT
+      newPageParams.limit !== this.authorService.getDefaultLimit()
     ) {
       queryParams['limit'] = newPageParams.limit;
     }

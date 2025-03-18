@@ -1,27 +1,25 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { NgIf, NgTemplateOutlet } from '@angular/common';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import {
   ActivatedRoute,
   NavigationEnd,
-  Params,
   Router,
   RouterLink,
-  RouterLinkWithHref,
 } from '@angular/router';
-import { AuthorService } from '../../services/author.service';
-import { Author } from '../../models/author.model';
-import { NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
-import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
-import { FormsModule } from '@angular/forms';
 import { filter } from 'rxjs';
 import { RouterStateFromType } from '../../../../core/models/router-state-from.model';
 import { RouterStateService } from '../../../../core/services/route-state.service';
+import { LoaderComponent } from '../../../../shared/components/loader/loader.component';
+import { Author } from '../../models/author.model';
+import { AuthorService } from '../../services/author.service';
 
 @Component({
   selector: 'app-author-page',
   imports: [NgIf, LoaderComponent, FormsModule, NgTemplateOutlet, RouterLink],
   templateUrl: './author-page.component.html',
 })
-export class AuthorPageComponent {
+export class AuthorPageComponent implements OnInit {
   readonly DEFAULT_BACK_URL = '/authors';
   readonly initialValues = {
     firstName: '',

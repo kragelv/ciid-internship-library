@@ -1,5 +1,5 @@
 import { NgClass, NgFor, NgIf } from '@angular/common';
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { range } from '../../utils/math.utils';
 
 @Component({
@@ -42,11 +42,11 @@ export class PaginationComponent implements OnInit {
     return this._totalPages;
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.updatePagination();
   }
 
-  private updatePagination(): void {
+  private updatePagination() {
     const rightDiff = this._totalPages - this._currentPage;
     const leftDiff = this._currentPage - 1;
     const leftCount = Math.max(
@@ -66,19 +66,19 @@ export class PaginationComponent implements OnInit {
     this.needLast = this.end <= this._totalPages;
   }
 
-  handlePrev(): void {
+  handlePrev() {
     if (this._currentPage > 1) {
       this.pageChange.emit(this._currentPage - 1);
     }
   }
 
-  handleNext(): void {
+  handleNext() {
     if (this._currentPage < this._totalPages) {
       this.pageChange.emit(this._currentPage + 1);
     }
   }
 
-  handlePageClick(page: number): void {
+  handlePageClick(page: number) {
     this.pageChange.emit(page);
   }
 

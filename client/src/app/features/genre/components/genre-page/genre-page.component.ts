@@ -1,5 +1,5 @@
 import { NgIf, NgTemplateOutlet } from '@angular/common';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ActivatedRoute,
@@ -19,7 +19,7 @@ import { GenreService } from '../../services/genre.service';
   imports: [NgIf, LoaderComponent, FormsModule, NgTemplateOutlet, RouterLink],
   templateUrl: './genre-page.component.html',
 })
-export class GenrePageComponent {
+export class GenrePageComponent implements OnInit {
   readonly DEFAULT_BACK_URL = '/genres';
 
   genre: Genre = {} as Genre;

@@ -19,7 +19,7 @@ export class RouterStateService {
     this.initRouteTracking();
   }
 
-  private initRouteTracking(): void {
+  private initRouteTracking() {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe((event: NavigationEnd) => {
